@@ -1,6 +1,9 @@
-import keyboard
+from pynput import keyboard
+import time
 
-def display_key():
+def on_press(key):
     print('Hello!')
 
-keyboard.on_press(display_key)
+listener = keyboard.Listener(on_press = on_press)
+listener.start()
+time.sleep(100)
