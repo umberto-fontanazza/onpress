@@ -9,3 +9,6 @@ The second option I'm trying is https://github.com/moses-palmer/pynput
 Before installing with pip make sure you are using pip installed inside the right conda env
 Other versions of pynput give problems but 1.7.6 seems to work fine.
     pip install pynput==1.7.6
+
+### finding images of keys
+https://www.wpclipart.com/computer/keyboard_keys/
