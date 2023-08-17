@@ -18,31 +18,34 @@ class KeyDisplayer:
         window = cls.__window
         # window.title('Main window')
         window.rowconfigure(0, weight=1)
-        window.geometry('800x800')
+        window.geometry('800x200')
         window.geometry('-100+100') # move window to the top right side
         cls.__init_tk_style()
-        KeyDisplayer.displayChar('a')
-        KeyDisplayer.displayChar('a')
+        window.bind('<KeyPress>', cls.on_press)
         window.mainloop()
+
+    def on_press(self):
+        print('Hello')
 
     @classmethod
     def __init_tk_style(cls):
         s = ttk.Style(cls.__window)
         s.theme_use('classic') # https://stackoverflow.com/questions/23750141/tkinter-ttk-widgets-ignoring-background-color
-        s.configure('TFrame', background='red')
+        s.configure('TFrame', background='green')
+        s.configure('red.TFrame', background='red')
 
     @staticmethod
-    def __create_image_frame(parent, image : tk.PhotoImage) -> ttk.Frame:
-        frame = ttk.Frame(parent)
+    def __create_image_frame(parent, image : tk.PhotoImage, background = 'green') -> ttk.Frame:
+        frame = ttk.Frame(parent, style='red.TFrame' if background == 'red' else None)
         canvas = tk.Canvas(frame, background='purple')
         canvas.grid(row=0, column=0, sticky='nswe')
         canvas.create_image((0,0), image=image, anchor='nw')
         return frame
 
     @classmethod
-    def displayChar(cls, char: str):
+    def displayChar(cls, char: str, background='green'):
         shown_keys_count: int = len(cls.__window.winfo_children())
         cls.__window.columnconfigure(shown_keys_count, weight=1)
         image : tk.PhotoImage = ImageManager.open_key_image(char)
-        frame = cls.__create_image_frame(cls.__window, image)
+        frame = cls.__create_image_frame(cls.__window, image, background)
         frame.grid(row=0, column=shown_keys_count, sticky='nswe')

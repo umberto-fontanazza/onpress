@@ -12,3 +12,6 @@ Other versions of pynput give problems but 1.7.6 seems to work fine.
 
 ### finding images of keys
 https://www.wpclipart.com/computer/keyboard_keys/
+
+After some exploration of the tk module, it seems as it is possible to detect keystroke with the command
+    window.bind('<KeyPress>', cls.on_press)
