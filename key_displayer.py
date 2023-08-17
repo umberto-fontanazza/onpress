@@ -7,15 +7,20 @@ from typing import Union
 
 class KeyDisplayer:
     __instance = None
-    __window = None
+    __initialized = False
+    __window : tk.Tk = None
 
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
-            cls.__instance.__initialize_tk()
         return cls.__instance
 
-    def __initialize_tk(self):
+    def __init__(self):
+        if self.__initialized: return
+        self.__initialized = True
+        self.__init_tk_window()
+
+    def __init_tk_window(self):
         self.__window = tk.Tk()
         window = self.__window
         window.rowconfigure(0, weight=1)
@@ -26,9 +31,9 @@ class KeyDisplayer:
         window.mainloop()
 
     def __init_tk_style(self):
-        s = ttk.Style(self.__window)
-        s.theme_use('classic') # https://stackoverflow.com/questions/23750141/tkinter-ttk-widgets-ignoring-background-color
-        s.configure('TFrame', background='green')
+        self._style = ttk.Style(self.__window)
+        self._style.theme_use('classic') # https://stackoverflow.com/questions/23750141/tkinter-ttk-widgets-ignoring-background-color
+        self._style.configure('TFrame', background='green')
 
     def __create_image_frame(self, parent, image : tk.PhotoImage) -> ttk.Frame:
         frame = ttk.Frame(parent)
@@ -38,15 +43,9 @@ class KeyDisplayer:
         return frame
 
     def displayChar(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
-        if type(key) == keyboard.KeyCode:
-            char: str = key.char
-        elif type(key) == keyboard.Key:
-            return
-        else:
-            return
         shown_keys_count: int = len(self.__window.winfo_children())
         self.__window.columnconfigure(shown_keys_count, weight=1)
-        image : tk.PhotoImage = ImageManager.open_key_image(char)
+        image : tk.PhotoImage = ImageManager.open_key_image(key)
         frame = self.__create_image_frame(self.__window, image)
         frame.grid(row=0, column=shown_keys_count, sticky='nswe')
         Timer(3.0, lambda: self.remove_frame(frame)).start()
