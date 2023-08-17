@@ -12,20 +12,16 @@ class KeyDisplayer:
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
-            cls.__initialize_tk()
+            cls.__instance.__initialize_tk()
         return cls.__instance
 
-    def __init__(self):
-        pass
-
-    @classmethod
-    def __initialize_tk(cls):
-        cls.__window = tk.Tk()
-        window = cls.__window
+    def __initialize_tk(self):
+        self.__window = tk.Tk()
+        window = self.__window
         window.rowconfigure(0, weight=1)
         window.geometry('50x50-100+100') # move window to the top right side
-        cls.__init_tk_style()
-        listener = keyboard.Listener(on_press=cls.displayChar)
+        self.__init_tk_style()
+        listener = keyboard.Listener(on_press=self.displayChar)
         listener.start()
         window.mainloop()
 
