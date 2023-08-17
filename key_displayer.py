@@ -10,10 +10,13 @@ class KeyDisplayer:
     __window = None
 
     def __new__(cls):
-        if not cls.__instance:
+        if cls.__instance is None:
             cls.__instance = super().__new__(cls)
             cls.__initialize_tk()
         return cls.__instance
+
+    def __init__(self):
+        pass
 
     @classmethod
     def __initialize_tk(cls):
@@ -22,7 +25,6 @@ class KeyDisplayer:
         window.rowconfigure(0, weight=1)
         window.geometry('50x50-100+100') # move window to the top right side
         cls.__init_tk_style()
-        # on_key_press = lambda key: cls.displayChar(key.char) # TODO: handle when there is no char attribute
         listener = keyboard.Listener(on_press=cls.displayChar)
         listener.start()
         window.mainloop()
@@ -45,6 +47,8 @@ class KeyDisplayer:
     def displayChar(cls, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         if type(key) == keyboard.KeyCode:
             char: str = key.char
+        elif type(key) == keyboard.Key:
+            return
         else:
             return
         shown_keys_count: int = len(cls.__window.winfo_children())
