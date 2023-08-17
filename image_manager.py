@@ -20,12 +20,7 @@ class ImageManager:
 
     @classmethod
     def __open_image(cls, path: str):
-        print(path)
-        try:
-            image = Image.open(path)
-        except FileNotFoundError as fnf:
-            print(f"Can't open {path}")
-            raise
+        image = Image.open(path)
         image.resize((50,50))
         photo_image = ImageTk.PhotoImage(image)
         cls.__buffer[path] = photo_image
@@ -54,7 +49,7 @@ class ImageManager:
         elif key is keyboard.Key.alt_r:
             filename = filenames_map_special["alt/option"]
         elif key is keyboard.Key.alt_gr:
-            filename = filenames_map_special[""]
+            filename = filenames_map_special["alt/option"]
         elif key is keyboard.Key.backspace:
             filename = filenames_map_special["backspace"]
         elif key is keyboard.Key.caps_lock:
