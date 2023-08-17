@@ -3,7 +3,7 @@ from pynput import keyboard
 from typing import Union
 
 class ImageManager:
-    __buffer = {}
+    __buffer: dict[str, ImageTk.PhotoImage] = {}
 
     @staticmethod
     def open_key_image(key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
@@ -14,7 +14,7 @@ class ImageManager:
             return
         else:
             return
-        path = './assets/letter_a.png' if char == 'a' else None
+        path = './assets/letter_a.png' if char == 'a' else ''
         path = './assets/letter_b.png' if char == 'b' else path
         return ImageManager.__open_image(path)
 
