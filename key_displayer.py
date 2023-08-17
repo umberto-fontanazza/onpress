@@ -1,6 +1,7 @@
 from image_manager import ImageManager
 import tkinter as tk
 from tkinter import ttk
+from pynput import keyboard
 
 class KeyDisplayer:
     __instance = None
@@ -21,8 +22,9 @@ class KeyDisplayer:
         window.geometry('800x200')
         window.geometry('-100+100') # move window to the top right side
         cls.__init_tk_style()
-        on_press = lambda key: cls.displayChar(key.char)
-        window.bind('<KeyPress>', on_press)
+        on_key_press = lambda key: cls.displayChar(key.char)
+        listener = keyboard.Listener(on_press=on_key_press)
+        listener.start()
         window.mainloop()
 
     @classmethod
