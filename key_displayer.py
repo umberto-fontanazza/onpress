@@ -21,11 +21,9 @@ class KeyDisplayer:
         window.geometry('800x200')
         window.geometry('-100+100') # move window to the top right side
         cls.__init_tk_style()
-        window.bind('<KeyPress>', cls.on_press)
+        on_press = lambda key: cls.displayChar(key.char)
+        window.bind('<KeyPress>', on_press)
         window.mainloop()
-
-    def on_press(self):
-        print('Hello')
 
     @classmethod
     def __init_tk_style(cls):
