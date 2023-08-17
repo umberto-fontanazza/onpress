@@ -9,7 +9,7 @@ class ImageManager:
         path = './assets/letter_a.png' if char == 'a' else None
         path = './assets/letter_b.png' if char == 'b' else path
         if not path: raise(ValueError(f"Couldn't find a path for letter {char}"))
-        image = Image.open(path)
+        image = Image.open(path).resize((50,50))
         photo_image = ImageTk.PhotoImage(image)
         cls.__buffer[path] = photo_image
         return photo_image
