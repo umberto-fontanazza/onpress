@@ -7,15 +7,12 @@ class ImageManager:
 
     @staticmethod
     def open_key_image(key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
-        # TODO: generalize for any keyboard key
-        if type(key) == keyboard.KeyCode:
-            char: str = key.char if key.char is not None else ''
-        elif type(key) == keyboard.Key:
-            return
+        if isinstance(key, keyboard.KeyCode):
+            path = ImageManager.__key_image_path(key)
+        elif isinstance(key, keyboard.Key):
+            path = ImageManager.__key_special_image_path(key)
         else:
-            return
-        path = './assets/letter_a.png' if char == 'a' else ''
-        path = './assets/letter_b.png' if char == 'b' else path
+            path = ''
         return ImageManager.__open_image(path)
 
     @classmethod
@@ -29,3 +26,16 @@ class ImageManager:
         photo_image = ImageTk.PhotoImage(image)
         cls.__buffer[path] = photo_image
         return photo_image
+
+    @staticmethod
+    def __key_image_path(key: keyboard.KeyCode) -> str:
+        path = ''
+        char: str = key.char
+        if char == 'a': path = 'letter_a.png'
+        if char == 'b': path = 'letter_b.png'
+        return path
+
+    @staticmethod
+    def __key_special_image_path(key: keyboard.Key) -> str:
+        path = ''
+        return path
