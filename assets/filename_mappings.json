@@ -1,0 +1,9 @@
+{
+    "keys": {
+        "a": "letter_a.png",
+        "b": "letter_b.png"
+    },
+    "special_keys": {
+        "space": "space.png"
+    }
+}
