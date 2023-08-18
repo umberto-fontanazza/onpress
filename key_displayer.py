@@ -17,8 +17,9 @@ class KeyDisplayer:
 
     def __init__(self):
         if self.__initialized: return
-        self.__initialized = True
+        self.__shown_keys = 0
         self.__init_tk_window()
+        self.__initialized = True
 
     def __init_tk_window(self):
         self.__window = tk.Tk()
@@ -26,8 +27,9 @@ class KeyDisplayer:
         window.overrideredirect(True) # remove OS controls
         window.rowconfigure(0, weight=1)
         window.geometry('0x50-100+100')
+        window.attributes('-alpha', 0)
         self.__init_tk_style()
-        listener = keyboard.Listener(on_press=self.displayChar)
+        listener = keyboard.Listener(on_press=self.show_char)
         listener.start()
         window.mainloop()
 
@@ -43,7 +45,7 @@ class KeyDisplayer:
         canvas.create_image((0,0), image=image, anchor='nw')
         return frame
 
-    def displayChar(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
+    def show_char(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         try:
             image : tk.PhotoImage = ImageManager.open_key_image(key)
         except ImageAlreadyOpened as already_opened:
@@ -52,18 +54,23 @@ class KeyDisplayer:
         except FileNotFoundError as fnf:
             print(fnf)
             return
-        shown_keys_count: int = len(self.__window.winfo_children())
         self.__update_window_width(50)
-        self.__window.columnconfigure(shown_keys_count, weight=1)
+        self.__window.columnconfigure(self.__shown_keys, weight=1)
         frame = self.__create_image_frame(self.__window, image)
-        frame.grid(row=0, column=shown_keys_count, sticky='nswe')
+        frame.grid(row=0, column=self.__shown_keys, sticky='nswe')
         Timer(2.0, lambda: self.hide_char(frame, key)).start()
+        self.__shown_keys += 1
+        if self.__shown_keys == 1:
+            self.__window.attributes('-alpha', 1) # show window
 
     def hide_char(self, frame: ttk.Frame, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         frame.grid_forget()
         frame.destroy()
         self.__update_window_width(-50)
         ImageManager.closeImage(key)
+        self.__shown_keys -= 1
+        if self.__shown_keys == 0:
+            self.__window.attributes('-alpha', 0) # hide window
 
     def __update_window_width(self, increment: int):
         window = self.__window

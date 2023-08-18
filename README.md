@@ -18,3 +18,7 @@ https://www.wpclipart.com/computer/keyboard_keys/
 - removing elements from the image buffer when deleting
 - handle keys which are not squared, the images must be loaded with different dimensions and
 the window must resize accordingly
+
+### problems
+- init of KeyDisplayer never finishes execution because of window.mainloop(), a separate start() method should be
+created to avoid this problem
