@@ -11,3 +11,9 @@ Other versions of pynput give problems but 1.7.6 seems to work fine.
 
 ### finding images of keys
 https://www.wpclipart.com/computer/keyboard_keys/
+
+### todo
+- window must resize if elements are added or removed
+- elements must be added to the window with the proper size
+- animate adding elements to the window and removal
+- removing elements from the image buffer when deleting
