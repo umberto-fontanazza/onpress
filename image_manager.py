@@ -19,7 +19,14 @@ class ImageManager:
         return ImageManager.__open_image(path)
 
     @classmethod
+    def closeImage(cls, key: Union[keyboard.Key, keyboard.KeyCode, None]):
+        path = cls.__key_image_path(key)
+        del cls.__buffer[path]
+
+    @classmethod
     def __open_image(cls, path: str):
+        if path in cls.__buffer:
+            raise ImageAlreadyOpened(f'The image is already in the ImageManager buffer, path: {path}')
         image = Image.open(path)
         image.convert('RGBA') # used to keep transparency
         resized = image.resize((50,50))
@@ -174,3 +181,6 @@ class ImageManager:
             with open('./assets/filename_mappings.json', 'r', encoding='utf-8') as json_file:
                 ImageManager.__filenames_map = json.load(json_file)
         return ImageManager.__filenames_map
+
+class ImageAlreadyOpened(Exception):
+    pass

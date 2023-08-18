@@ -1,4 +1,4 @@
-from image_manager import ImageManager
+from image_manager import ImageManager, ImageAlreadyOpened
 import tkinter as tk
 from tkinter import ttk
 from pynput import keyboard
@@ -44,18 +44,26 @@ class KeyDisplayer:
         return frame
 
     def displayChar(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
+        try:
+            image : tk.PhotoImage = ImageManager.open_key_image(key)
+        except ImageAlreadyOpened as already_opened:
+            print(already_opened)
+            return
+        except FileNotFoundError as fnf:
+            print(fnf)
+            return
         shown_keys_count: int = len(self.__window.winfo_children())
         self.__update_window_width(50)
         self.__window.columnconfigure(shown_keys_count, weight=1)
-        image : tk.PhotoImage = ImageManager.open_key_image(key)
         frame = self.__create_image_frame(self.__window, image)
         frame.grid(row=0, column=shown_keys_count, sticky='nswe')
-        Timer(5.0, lambda: self.remove_frame(frame)).start()
+        Timer(2.0, lambda: self.hide_char(frame, key)).start()
 
-    def remove_frame(self, frame: ttk.Frame):
+    def hide_char(self, frame: ttk.Frame, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         frame.grid_forget()
         frame.destroy()
         self.__update_window_width(-50)
+        ImageManager.closeImage(key)
 
     def __update_window_width(self, increment: int):
         window = self.__window
