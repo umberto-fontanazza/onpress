@@ -23,6 +23,7 @@ class KeyDisplayer:
     def __init_tk_window(self):
         self.__window = tk.Tk()
         window = self.__window
+        window.overrideredirect(True) # remove OS controls
         window.rowconfigure(0, weight=1)
         window.geometry('0x50-100+100')
         self.__init_tk_style()
