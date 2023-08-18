@@ -1,5 +1,9 @@
 # onpress
 
+This project uses conda as package manager, after cloning use
+    conda env create -f environment.yml
+to replicate the same environment on your machine
+
 ## dependencies
 
 This package ttps://github.com/boppreh/keyboard seems out of date, therefor I went for pynput
