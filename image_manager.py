@@ -22,8 +22,8 @@ class ImageManager:
     def __open_image(cls, path: str):
         image = Image.open(path)
         image.convert('RGBA') # used to keep transparency
-        image.resize((50,50))
-        photo_image = ImageTk.PhotoImage(image)
+        resized = image.resize((50,50))
+        photo_image = ImageTk.PhotoImage(resized)
         cls.__buffer[path] = photo_image
         return photo_image
 
