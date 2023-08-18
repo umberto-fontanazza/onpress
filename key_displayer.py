@@ -24,7 +24,7 @@ class KeyDisplayer:
         self.__window = tk.Tk()
         window = self.__window
         window.rowconfigure(0, weight=1)
-        window.geometry('50x50-100+100')
+        window.geometry('0x50-100+100')
         self.__init_tk_style()
         listener = keyboard.Listener(on_press=self.displayChar)
         listener.start()
@@ -44,12 +44,21 @@ class KeyDisplayer:
 
     def displayChar(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         shown_keys_count: int = len(self.__window.winfo_children())
+        self.__update_window_width(50)
         self.__window.columnconfigure(shown_keys_count, weight=1)
         image : tk.PhotoImage = ImageManager.open_key_image(key)
         frame = self.__create_image_frame(self.__window, image)
         frame.grid(row=0, column=shown_keys_count, sticky='nswe')
-        Timer(3.0, lambda: self.remove_frame(frame)).start()
+        Timer(5.0, lambda: self.remove_frame(frame)).start()
 
     def remove_frame(self, frame: ttk.Frame):
         frame.grid_forget()
         frame.destroy()
+        self.__update_window_width(-50)
+
+    def __update_window_width(self, increment: int):
+        window = self.__window
+        old_width: int = window.winfo_width()
+        new_width = old_width + increment
+        new_width = new_width if new_width >= 0 else 0
+        window.geometry(f'{new_width}x50')
