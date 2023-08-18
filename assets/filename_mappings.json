@@ -1,7 +1,12 @@
 {
     "keys": {
         "a": "letter_a.png",
-        "b": "letter_b.png"
+        "b": "letter_b.png",
+        "c": "letter_c.png",
+        "d": "letter_d.png",
+        "e": "letter_e.png",
+        "f": "letter_f.png",
+        "g": "letter_g.png"
     },
     "special_keys": {
         "space": "space.png"
