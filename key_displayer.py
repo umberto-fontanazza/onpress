@@ -8,7 +8,6 @@ from typing import Union
 class KeyDisplayer:
     __instance = None
     __initialized = False
-    __window : tk.Tk = None
 
     def __new__(cls):
         if cls.__instance is None:
