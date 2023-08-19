@@ -56,6 +56,7 @@ class ImagePaths:
         keyboard.Key.media_volume_up: "",
         keyboard.Key.media_previous: "",
         keyboard.Key.media_next: "",
+        # TODO: the following may not be defined on all platforms
         keyboard.Key.insert: "",
         keyboard.Key.menu: "",
         keyboard.Key.num_lock: "",
