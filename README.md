@@ -19,8 +19,9 @@ https://www.wpclipart.com/computer/keyboard_keys/
 ### todo
 - elements must be added to the window with the proper size
 - animate adding elements to the window and removal
-- handle keys which are not squared, the images must be loaded with different dimensions and
-the window must resize accordingly
+
+### bugs
+- images with unusual aspect ratio, cause blank spaces between shown keys to appear
 
 ### problems
 - init of KeyDisplayer never finishes execution because of window.mainloop(), a separate start() method should be
