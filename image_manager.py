@@ -12,17 +12,20 @@ class ImageManager:
     @staticmethod
     def open_key_image(key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
         path = ""
-        if isinstance(key, keyboard.KeyCode):
-            filename: str = filenames_manager.get_key_filename(key)
-            path = str(Path.cwd() / 'assets' / 'keys' / filename)
-        elif isinstance(key, keyboard.Key):
-            filename: str = filenames_manager.get_special_key_filename(key)
-            path = str(Path.cwd() / 'assets' / 'special_keys' / filename)
+        if key is None:
+            raise ValueError('Key is None')
+        filename: str = filenames_manager.get_key_filename(key)
+        subfolder = 'special_keys' if isinstance(key, keyboard.Key) else 'keys'
+        path = str(Path.cwd() / 'assets' / subfolder / filename)
         return ImageManager.__open_image(path)
 
     @classmethod
-    def closeImage(cls, key: Union[keyboard.Key, keyboard.KeyCode, None]):
-        path = cls.__key_image_path(key)
+    def close_image(cls, key: Union[keyboard.Key, keyboard.KeyCode, None]):
+        if key is None:
+            raise ValueError('Key is None')
+        filename: str = filenames_manager.get_key_filename(key)
+        subfolder = 'special_keys' if isinstance(key, keyboard.Key) else 'keys'
+        path = str(Path.cwd() / 'assets' / subfolder / filename)
         del cls.__buffer[path]
 
     @classmethod

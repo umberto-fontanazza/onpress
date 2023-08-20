@@ -1,3 +1,4 @@
+from typing import Union
 from pynput import keyboard
 
 class FilenamesManager:
@@ -91,10 +92,12 @@ class FilenamesManager:
             key : keyboard.Key = keyboard.Key[key_name]
             self.__special_keys_filenames[key] = filename
 
-    def get_key_filename(self, key: keyboard.KeyCode) -> str:
-        if key.char is None: raise ValueError('key.char is None')
-        letter = key.char
-        return f'computer_key_{letter.upper()}_T.png'
-
-    def get_special_key_filename(self, key : keyboard.Key) -> str:
-        return self.__special_keys_filenames[key]
+    def get_key_filename(self, key: Union[keyboard.KeyCode, keyboard.Key]) -> str:
+        if isinstance(key, keyboard.KeyCode):
+            if key.char is None: raise ValueError('key.char is None')
+            letter = key.char
+            return f'computer_key_{letter.upper()}_T.png'
+        elif isinstance(key, keyboard.Key):
+            return self.__special_keys_filenames[key]
+        else:
+            raise TypeError('Key must be either a keyboard.KeyCode or a keyboard.Key')

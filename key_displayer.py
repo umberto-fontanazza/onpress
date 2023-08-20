@@ -66,7 +66,7 @@ class KeyDisplayer:
         frame.grid_forget()
         frame.destroy()
         self.__update_window_width(-50)
-        ImageManager.closeImage(key)
+        ImageManager.close_image(key)
         self.__shown_keys -= 1
         if self.__shown_keys == 0:
             self.__window.attributes('-alpha', 0) # hide window
