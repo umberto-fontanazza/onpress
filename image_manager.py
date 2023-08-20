@@ -3,7 +3,9 @@ from pynput import keyboard
 from typing import Union
 from pathlib import Path
 import json
-from image_paths import ImagePaths
+from filenames_manager import FilenamesManager
+
+filenames_manager = FilenamesManager()
 
 class ImageManager:
     __buffer: dict[str, ImageTk.PhotoImage] = {}
@@ -11,12 +13,12 @@ class ImageManager:
 
     @staticmethod
     def open_key_image(key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
+        path = ""
         if isinstance(key, keyboard.KeyCode):
             path = ImageManager.__key_image_path(key)
         elif isinstance(key, keyboard.Key):
-            path = ImageManager.__key_special_image_path(key)
-        else:
-            path = ''
+            filename: str = filenames_manager.get_special_key_filename(key)
+            path = str(Path.cwd() / 'assets' / 'special_keys' / filename)
         return ImageManager.__open_image(path)
 
     @classmethod
@@ -44,13 +46,6 @@ class ImageManager:
         filenames_map_keys = filenames_map["keys"]
         filename: str = filenames_map_keys[char]
         path = str(Path.cwd() / 'assets' / 'keys' / filename)
-        return path
-
-    @staticmethod
-    def __key_special_image_path(key: keyboard.Key) -> str:
-        path: str = ''
-        filename = ImagePaths.special_keys_filenames[key]
-        path = str(Path.cwd() / 'assets' / 'special_keys' / filename)
         return path
 
     @staticmethod

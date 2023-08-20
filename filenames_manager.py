@@ -1,7 +1,9 @@
 from pynput import keyboard
 
-class ImagePaths:
-    special_keys_filenames = {
+class FilenamesManager:
+    __instance  = None
+    __initialized = False
+    __special_keys_filenames: dict[keyboard.Key, str] = {
         keyboard.Key.alt: "",
         keyboard.Key.alt_l: "",
         keyboard.Key.alt_r: "",
@@ -64,3 +66,21 @@ class ImagePaths:
         keyboard.Key.print_screen: "computer_key_Print_Screen_T.png",
         keyboard.Key.scroll_lock: "computer_key_Scroll_Lock_T.png"
     }
+
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+
+    def __init__(self):
+        if self.__initialized:
+            return
+        self.__check_possibly_undefined_keys()
+        self.__initialized = True
+
+    def __check_possibly_undefined_keys():
+        # TODO: to be implemented
+        pass
+
+    def get_special_key_filename(self, key : keyboard.Key) -> str:
+        return self.__special_keys_filenames[key]
