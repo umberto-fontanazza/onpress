@@ -9,6 +9,13 @@ filenames_manager = FilenamesManager()
 class ImageManager:
     __buffer: dict[str, ImageTk.PhotoImage] = {}
 
+    @classmethod
+    def get_opened_image(cls, key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
+        filename: str = filenames_manager.get_key_filename(key)
+        if filename not in cls.__buffer:
+            raise KeyError(f'{filename} not in ImageManger buffer')
+        return cls.__buffer[filename]
+
     @staticmethod
     def open_key_image(key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
         if key is None:
@@ -26,12 +33,14 @@ class ImageManager:
         del cls.__buffer[filename]
 
     @classmethod
-    def __open_image(cls, path: Path) -> ImageTk.PhotoImage:
+    def __open_image(cls, path: Path, heigt: int = 50) -> ImageTk.PhotoImage:
         if path.name in cls.__buffer:
             raise ImageAlreadyOpened(f'The image is already in the ImageManager buffer, filename: {path.name}')
         image = Image.open(path)
         image.convert('RGBA') # used to keep transparency
-        resized = image.resize((50,50))
+        image_aspect_ratio = image.width / image.height
+        width = int(image_aspect_ratio * heigt)
+        resized = image.resize((width,heigt))
         photo_image = ImageTk.PhotoImage(resized)
         cls.__buffer[path.name] = photo_image
         return photo_image

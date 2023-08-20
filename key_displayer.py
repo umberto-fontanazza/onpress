@@ -4,6 +4,7 @@ from tkinter import ttk
 from pynput import keyboard
 from threading import Timer
 from typing import Union
+from PIL import ImageTk
 
 class KeyDisplayer:
     __instance = None
@@ -46,14 +47,14 @@ class KeyDisplayer:
 
     def show_char(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         try:
-            image : tk.PhotoImage = ImageManager.open_key_image(key)
+            image : ImageTk.PhotoImage = ImageManager.open_key_image(key)
         except ImageAlreadyOpened as already_opened:
             print(already_opened)
             return
         except FileNotFoundError as fnf:
             print(fnf)
             return
-        self.__update_window_width(50)
+        self.__update_window_width(image.width())
         self.__window.columnconfigure(self.__shown_keys, weight=1)
         frame = self.__create_image_frame(self.__window, image)
         frame.grid(row=0, column=self.__shown_keys, sticky='nswe')
@@ -65,7 +66,8 @@ class KeyDisplayer:
     def hide_char(self, frame: ttk.Frame, key: Union[keyboard.Key, keyboard.KeyCode, None]):
         frame.grid_forget()
         frame.destroy()
-        self.__update_window_width(-50)
+        image_width : int = ImageManager.get_opened_image(key).width()
+        self.__update_window_width(-image_width)
         ImageManager.close_image(key)
         self.__shown_keys -= 1
         if self.__shown_keys == 0:
