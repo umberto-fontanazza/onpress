@@ -102,7 +102,7 @@ class FilenamesManager:
                 raise KeyError(f'key {key} is not in in FilenamesManager.__special_keys_filenames' )
             filename = self.__special_keys_filenames[key]
             if not filename:
-                raise ValueError(f'File for key {key} not found.')
+                raise ValueError(f'Filename is an empty string')
             return filename
         else:
             raise TypeError('Key must be either a keyboard.KeyCode or a keyboard.Key')

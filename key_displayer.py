@@ -54,6 +54,9 @@ class KeyDisplayer:
         except FileNotFoundError as fnf:
             print(fnf)
             return
+        except ValueError as ve:
+            print(ve)
+            return
         self.__update_window_width(image.width())
         self.__window.columnconfigure(self.__shown_keys, weight=1)
         frame = self.__create_image_frame(self.__window, image)
