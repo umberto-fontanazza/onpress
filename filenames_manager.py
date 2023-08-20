@@ -91,5 +91,10 @@ class FilenamesManager:
             key : keyboard.Key = keyboard.Key[key_name]
             self.__special_keys_filenames[key] = filename
 
+    def get_key_filename(self, key: keyboard.KeyCode) -> str:
+        if key.char is None: raise ValueError('key.char is None')
+        letter = key.char
+        return f'computer_key_{letter.upper()}_T.png'
+
     def get_special_key_filename(self, key : keyboard.Key) -> str:
         return self.__special_keys_filenames[key]
