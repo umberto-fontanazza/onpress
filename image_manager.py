@@ -29,7 +29,7 @@ class ImageManager:
         del cls.__buffer[path]
 
     @classmethod
-    def __open_image(cls, path: str):
+    def __open_image(cls, path: str) -> ImageTk.PhotoImage:
         if path in cls.__buffer:
             raise ImageAlreadyOpened(f'The image is already in the ImageManager buffer, path: {path}')
         image = Image.open(path)
