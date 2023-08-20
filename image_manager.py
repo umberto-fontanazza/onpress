@@ -11,12 +11,11 @@ class ImageManager:
 
     @staticmethod
     def open_key_image(key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
-        path = ""
         if key is None:
             raise ValueError('Key is None')
         filename: str = filenames_manager.get_key_filename(key)
         subfolder = 'special_keys' if isinstance(key, keyboard.Key) else 'keys'
-        path = str(Path.cwd() / 'assets' / subfolder / filename)
+        path = Path.cwd() / 'assets' / subfolder / filename
         return ImageManager.__open_image(path)
 
     @classmethod
@@ -24,19 +23,17 @@ class ImageManager:
         if key is None:
             raise ValueError('Key is None')
         filename: str = filenames_manager.get_key_filename(key)
-        subfolder = 'special_keys' if isinstance(key, keyboard.Key) else 'keys'
-        path = str(Path.cwd() / 'assets' / subfolder / filename)
-        del cls.__buffer[path]
+        del cls.__buffer[filename]
 
     @classmethod
-    def __open_image(cls, path: str) -> ImageTk.PhotoImage:
-        if path in cls.__buffer:
-            raise ImageAlreadyOpened(f'The image is already in the ImageManager buffer, path: {path}')
+    def __open_image(cls, path: Path) -> ImageTk.PhotoImage:
+        if path.name in cls.__buffer:
+            raise ImageAlreadyOpened(f'The image is already in the ImageManager buffer, filename: {path.name}')
         image = Image.open(path)
         image.convert('RGBA') # used to keep transparency
         resized = image.resize((50,50))
         photo_image = ImageTk.PhotoImage(resized)
-        cls.__buffer[path] = photo_image
+        cls.__buffer[path.name] = photo_image
         return photo_image
 
 class ImageAlreadyOpened(Exception):
