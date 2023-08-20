@@ -58,13 +58,8 @@ class FilenamesManager:
         keyboard.Key.media_volume_up: "",
         keyboard.Key.media_previous: "",
         keyboard.Key.media_next: "",
-        # TODO: the following may not be defined on all platforms
-        keyboard.Key.insert: "computer_key_Insert_T.png",
-        keyboard.Key.menu: "",
-        keyboard.Key.num_lock: "computer_key_Num_Lock_T.png",
-        keyboard.Key.pause: "computer_key_Pause_Break_T.png",
-        keyboard.Key.print_screen: "computer_key_Print_Screen_T.png",
-        keyboard.Key.scroll_lock: "computer_key_Scroll_Lock_T.png"
+        # Checking keyboard.Key definitions the following keys may not
+        # be defined on all platforms: insert, menu, num_lock, pause, print_screen, scroll_lock
     }
 
     def __new__(cls):
@@ -78,9 +73,23 @@ class FilenamesManager:
         self.__check_possibly_undefined_keys()
         self.__initialized = True
 
-    def __check_possibly_undefined_keys():
-        # TODO: to be implemented
-        pass
+    def __check_possibly_undefined_keys(self):
+        key_filename_pairs = {
+            "insert": "computer_key_Insert_T.png",
+            "menu": "",
+            "num_lock": "computer_key_Num_Lock_T.png",
+            "pause": "computer_key_Pause_Break_T.png",
+            "print_screen": "computer_key_Print_Screen_T.png",
+            "scroll_lock": "computer_key_Scroll_Lock_T.png"
+        }
+
+        for key_name in key_filename_pairs:
+            filename = key_filename_pairs[key_name]
+            if not hasattr(keyboard.Key, key_name):
+                print(f"This platform doesn't support key: {key_name}")
+                continue
+            key : keyboard.Key = keyboard.Key[key_name]
+            self.__special_keys_filenames[key] = filename
 
     def get_special_key_filename(self, key : keyboard.Key) -> str:
         return self.__special_keys_filenames[key]
