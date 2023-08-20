@@ -19,6 +19,7 @@ https://www.wpclipart.com/computer/keyboard_keys/
 ### todo
 - elements must be added to the window with the proper size
 - animate adding elements to the window and removal
+- add special keys which are different on Windows and Mac Os
 
 ### bugs
 - images with unusual aspect ratio, cause blank spaces between shown keys to appear
