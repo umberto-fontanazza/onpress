@@ -98,6 +98,11 @@ class FilenamesManager:
             letter = key.char
             return f'computer_key_{letter.upper()}_T.png'
         elif isinstance(key, keyboard.Key):
-            return self.__special_keys_filenames[key]
+            if key not in self.__special_keys_filenames:
+                raise KeyError(f'key {key} is not in in FilenamesManager.__special_keys_filenames' )
+            filename = self.__special_keys_filenames[key]
+            if not filename:
+                raise ValueError(f'File for key {key} not found.')
+            return filename
         else:
             raise TypeError('Key must be either a keyboard.KeyCode or a keyboard.Key')
