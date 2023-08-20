@@ -2,7 +2,6 @@ from PIL import Image, ImageTk
 from pynput import keyboard
 from typing import Union
 from pathlib import Path
-import json
 from filenames_manager import FilenamesManager
 
 filenames_manager = FilenamesManager()
