@@ -62,13 +62,19 @@ class KeyDisplayer:
         image_label.pack(side = tk.LEFT)
         self.__window.update() # TODO: check if necessary
 
-    def hide_key(self, key: Union[keyboard.Key, keyboard.KeyCode, None]):
-        label : ttk.Label = self.__labels[key]
-        label_width = label.winfo_width()
-        label.destroy()
-        del self.__labels[key]
-        ImageManager.close_image(key)
-        self.width -= label_width
+    def hide_key(self, key: Union[keyboard.Key, keyboard.KeyCode, None], delay_seconds : float = 0):
+        def hide_key_immediately():
+            label : ttk.Label = self.__labels[key]
+            label_width = label.winfo_width()
+            label.destroy()
+            del self.__labels[key]
+            ImageManager.close_image(key)
+            self.width -= label_width
+
+        if delay_seconds:
+            Timer(delay_seconds, hide_key_immediately).start()
+        else:
+            hide_key_immediately()
 
     """
     def __init__(self):
