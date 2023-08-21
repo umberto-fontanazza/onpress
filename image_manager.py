@@ -9,6 +9,7 @@ filenames_manager = FilenamesManager()
 class ImageManager:
     __buffer: dict[str, ImageTk.PhotoImage] = {}
 
+    # TODO: may not be necessary anymore check if that's the case
     @classmethod
     def get_opened_image(cls, key: Union[keyboard.Key, keyboard.KeyCode, None]) -> ImageTk.PhotoImage:
         filename: str = filenames_manager.get_key_filename(key)
