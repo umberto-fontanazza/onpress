@@ -5,6 +5,7 @@ from pynput import keyboard
 from threading import Timer
 from typing import Union
 from PIL import ImageTk
+import platform
 
 class KeyDisplayer:
     __instance = None
@@ -22,8 +23,9 @@ class KeyDisplayer:
         self.__labels: dict[Union[keyboard.Key, keyboard.KeyCode], ttk.Label] = {}
         window.overrideredirect(True)
         window.geometry(f'0x{self.height}-100+100')
-        window.wm_attributes('-transparent', True)
-        window.configure(bg='systemTransparent')
+        if platform.system() == 'Darwin':
+            window.wm_attributes('-transparent', True)
+            window.configure(bg='systemTransparent')
         self.__initialized = True
 
     def start(self):
