@@ -63,6 +63,25 @@ class FilenamesManager:
         # be defined on all platforms: insert, menu, num_lock, pause, print_screen, scroll_lock
     }
 
+    __two_chars_keys_filenames = {
+        ";" : "computer_key_Colon_Semicolon_T.png",
+        ":" : "computer_key_Colon_Semicolon_T.png",
+        "." : "computer_key_Greater_than_Period_T.png",
+        ">" : "computer_key_Greater_than_Period_T.png",
+        "," : "computer_key_Less_than_Comma_T.png",
+        "<" : "computer_key_Less_than_Comma_T.png",
+        # TODO: to be fixed r"\": "computer_key_Pipe_Backslash_T.png",
+        "|" : "computer_key_Pipe_Backslash_T.png",
+        "/" : "computer_key_Question_Forward_slash_T.png",
+        "?" : "computer_key_Question_Forward_slash_T.png",
+        "'" : "computer_key_Quotation_Marks_T.png",
+        '"' : "computer_key_Quotation_Marks_T.png",
+        "[" : "computer_key_brackets_left_T.png",
+        "{" : "computer_key_brackets_left_T.png",
+        "]" : "computer_key_brackets_right_T.png",
+        "}" : "computer_key_brackets_right_T.png"
+    }
+
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
@@ -95,8 +114,12 @@ class FilenamesManager:
     def get_key_filename(self, key: Union[keyboard.KeyCode, keyboard.Key]) -> str:
         if isinstance(key, keyboard.KeyCode):
             if key.char is None: raise ValueError('key.char is None')
-            letter = key.char
-            return f'computer_key_{letter.upper()}_T.png'
+            char : str = key.char
+            if char.isalpha():
+                return f'computer_key_{char.upper()}_T.png'
+            if char not in self.__two_chars_keys_filenames:
+                raise NotImplementedError(f"char {char} not supported yet")
+            return self.__two_chars_keys_filenames[char]
         elif isinstance(key, keyboard.Key):
             if key not in self.__special_keys_filenames:
                 raise KeyError(f'key {key} is not in in FilenamesManager.__special_keys_filenames' )
