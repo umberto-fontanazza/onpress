@@ -66,6 +66,8 @@ class KeyDisplayer:
 
     def hide_key(self, key: Union[keyboard.Key, keyboard.KeyCode, None], delay_seconds : float = 0):
         def hide_key_immediately():
+            if key not in self.__labels:
+                return
             label : ttk.Label = self.__labels[key]
             label_width = label.winfo_width()
             label.destroy()
